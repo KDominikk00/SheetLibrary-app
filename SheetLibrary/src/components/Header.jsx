@@ -6,7 +6,7 @@ const Header = () => {
     <section className='flex justify-between items-center p-6 ml-12 mr-12'>
       <div>
         <img
-          src="./public/SheetLibrarynobg.png"
+          src="/SheetLibrarynobg.png"
           alt="SheetLibrary"
           width={250}
         />
