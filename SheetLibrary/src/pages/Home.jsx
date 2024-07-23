@@ -2,11 +2,11 @@ import React from 'react'
 import Header from '../components/Header'
 import Library from '../components/Library'
 
-const Home = () => {
+const Home = ({ data }) => {
   return (
     <>
         <Header />
-        <Library />
+        <Library data={data}/>
     </>
 
   )

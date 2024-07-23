@@ -29,3 +29,15 @@ body {
     transform: scaleX(1);
     transform-origin: bottom left;
   }
+
+  .max-w-header {
+    max-width: 80%;
+  }
+
+  .max-w-library {
+    max-width: 80%;
+  }
+
+  .ml-library {
+    margin-left: 14%;
+  }
