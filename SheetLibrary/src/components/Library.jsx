@@ -1,15 +1,22 @@
 import React from 'react'
 
-const Library = () => {
+const Library = ({ data = [] }) => {
   return (
-   <section>
-    <div className='border-solid border-black border inline-block bg-white m-12'>
-        <img src="https://oefgyfvlkuscxlaurufc.supabase.co/storage/v1/object/sign/scores/ballade%201.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJzY29yZXMvYmFsbGFkZSAxLnBuZyIsImlhdCI6MTcyMTU4MzgwNiwiZXhwIjoxNzUzMTE5ODA2fQ.kHGPpZyNZyzb-ORKmZQerrV29ZmVqruuApyg-eDQdXE&t=2024-07-21T17%3A43%3A27.059Z" alt="" width={250}/>
-        <h4>Ballade No. 1 Op. 23</h4>
-        <p>Frederic Chopin</p>
-        <p>Uploaded x minutes ago</p>
-    </div>
-   </section> 
+    <section className='max-w-library ml-library mt-10'>
+      <h2>user &gt; <span className='text-blue-500'>My Library</span></h2>
+      <h1 className='text-3xl'>My Library</h1>
+
+      <div className='flex flex-wrap'>
+          {data.map(item => (
+            <div key={item.id} className='border-solid border-black border bg-white cursor-pointer m-12 ml-0'>
+              <img className='border-solid border-black border' src={item.sheeturl} alt={item.title} width={250} />
+              <h4>{item.title}</h4>
+              <p>{item.author}</p>
+              <p>Uploaded x minutes ago</p>
+            </div>
+          ))}
+      </div>
+    </section>
   )
 }
 
