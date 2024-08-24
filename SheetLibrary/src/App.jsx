@@ -5,6 +5,7 @@ import Explore from './pages/Explore';
 import NoPage from './pages/NoPage';
 import Upload from './pages/Upload';
 import { useEffect, useState } from 'react';
+import Login from './pages/Login';
 
 function App() {
   const [data, setData] = useState([]);
@@ -31,6 +32,7 @@ function App() {
           <Route path="/explore" element={<Explore data={data} />} />
           <Route path="/upload" element={<Upload />} />
           <Route path="*" element={<NoPage />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>

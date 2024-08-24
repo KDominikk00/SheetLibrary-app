@@ -4,16 +4,49 @@ import Header from '../components/Header';
 const Upload = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
-  const [description, setDescription] = useState('')
-  const [file, setFile] = useState(null);
+  const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState('1');
+  const [sheetthumb, setSheetThumb] = useState('');
+  const [sheeturl, setSheetUrl] = useState('');
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
-    // Handle the file upload logic here
-    console.log('Title:', title);
-    console.log('Author:', author);
-    console.log('File:', file);
+
+    const data = {
+      title,
+      author,
+      description,
+      difficulty,
+      sheetthumb,
+      sheeturl,
+    };
+
+    try {
+      const response = await fetch('http://localhost:8080/sheet', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const result = await response.json();
+      alert('Upload successful!');
+      // Handle success: Clear the form or redirect
+      setTitle('');
+      setAuthor('');
+      setDescription('');
+      setDifficulty('1');
+      setSheetThumb('');
+      setSheetUrl('');
+    } catch (error) {
+      console.error('Error uploading data:', error);
+      alert('An error occurred during the upload. Please try again.');
+    }
   };
 
   return (
@@ -66,12 +99,21 @@ const Upload = () => {
               </select>
             </div>
             <div>
-              <label className='block text-xl mb-2'>Upload File:</label>
+              <label className='block text-xl mb-2'>Thumbnail URL:</label>
               <input 
-                type='file' 
-                onChange={(e) => setFile(e.target.files[0])}
+                type='text' 
+                value={sheetthumb}
+                onChange={(e) => setSheetThumb(e.target.value)}
                 className='border p-2 w-full'
-                required 
+              />
+            </div>
+            <div>
+              <label className='block text-xl mb-2'>Piece URL (PDF ONLY):</label>
+              <input 
+                type='text' 
+                value={sheeturl}
+                onChange={(e) => setSheetUrl(e.target.value)}
+                className='border p-2 w-full'
               />
             </div>
             <button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition-all'>
