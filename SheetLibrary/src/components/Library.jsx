@@ -142,7 +142,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
   return (
     <section className='max-w-library ml-library'>
       {data.length === 0 ? (
-        <div className='flex flex-col items-center mt-44 justify-center mr-24'>
+        <div className='flex flex-col items-center mt-44 justify-center mr-middle'>
           <p className='text-2xl mb-4'>Start filling your library now!</p>
           <button
             onClick={() => navigate('/upload')}
