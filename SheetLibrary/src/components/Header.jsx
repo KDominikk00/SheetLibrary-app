@@ -21,8 +21,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className='p-6 mx-auto max-w-header'>
-      <div className='flex items-center justify-between'>
+    <header className='p-6 mx-auto header-container'>
+      <div className='header-content flex items-center justify-between'>
         <div>
           <img src="/SheetLibrarynobg.png" alt="SheetLibrary" width={250} />
         </div>

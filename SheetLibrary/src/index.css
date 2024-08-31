@@ -10,9 +10,9 @@ body {
     text-decoration: none;
     position: relative;
     display: inline-block;
-  }
-  
-  .nav-link::after {
+}
+
+.nav-link::after {
     content: '';
     position: absolute;
     width: 100%;
@@ -23,21 +23,33 @@ body {
     transform: scaleX(0);
     transition: transform 0.3s ease-in-out;
     transform-origin: bottom right;
-  }
-  
-  .nav-link.active::after {
+}
+
+.nav-link.active::after {
     transform: scaleX(1);
     transform-origin: bottom left;
-  }
+}
 
-  .max-w-header {
+.header-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.header-content {
     max-width: 80%;
-  }
+    width: 100%;
+}
 
-  .max-w-library {
+.max-w-header {
+    max-width: 100%;
+}
+
+.max-w-library {
     max-width: 80%;
-  }
+}
 
-  .ml-library {
+.ml-library {
     margin-left: 14%;
-  }
+}

@@ -141,56 +141,68 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
 
   return (
     <section className='max-w-library ml-library'>
-      <div className='flex flex-wrap'>
-        {data.map((item, index) => (
-          <div key={item.id} className='relative border-solid border-black border bg-white cursor-pointer m-12 ml-0 rounded'>
-            <img className='border-solid border-black border m-4 h-50 rounded' src={item.sheetthumb} alt={item.title} width={250} />
+      {data.length === 0 ? (
+        <div className='flex flex-col items-center mt-44 justify-center mr-24'>
+          <p className='text-2xl mb-4'>Start filling your library now!</p>
+          <button
+            onClick={() => navigate('/upload')}
+            className='bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600'
+          >
+            Go to Upload
+          </button>
+        </div>
+      ) : (
+        <div className='flex flex-wrap'>
+          {data.map((item, index) => (
+            <div key={item.id} className='relative border-solid border-black border bg-white cursor-pointer m-12 ml-0 rounded'>
+              <img className='border-solid border-black border m-4 h-50 rounded' src={item.sheetthumb} alt={item.title} width={250} />
 
-            {isExplorePage ? (
-              <button
-                className='absolute top-14 right-3 bg-blue-500 text-white pl-3 pr-3 pb-1 rounded text-2xl'
-                onClick={() => handleAddToLibrary(item)}
-              >
-                +
-              </button>
-            ) : (
-              <>
-                <h4
-                  className='font-bold text-xl absolute right-3 top-13 cursor-pointer p-2 pt-0'
-                  onClick={() => handleMenuClick(item.id)}
+              {isExplorePage ? (
+                <button
+                  className='absolute top-14 right-3 bg-blue-500 text-white pl-3 pr-3 pb-1 rounded text-2xl'
+                  onClick={() => handleAddToLibrary(item)}
                 >
-                  ⋮
-                </h4>
-                {activeMenu === item.id && (
-                  <div
-                    ref={(el) => (menuRefs.current[index] = el)}
-                    className='absolute top-20 right-5 bg-white border border-black rounded shadow-lg'
+                  +
+                </button>
+              ) : (
+                <>
+                  <h4
+                    className='font-bold text-xl absolute right-3 top-13 cursor-pointer p-2 pt-0'
+                    onClick={() => handleMenuClick(item.id)}
                   >
-                    <ul>
-                      <li
-                        className='p-2 hover:bg-gray-200 cursor-pointer'
-                        onClick={() => handleEdit(item)}
-                      >
-                        Edit
-                      </li>
-                      <li
-                        className='p-2 hover:bg-gray-200 cursor-pointer'
-                        onClick={() => handleDelete(item.id)}
-                      >
-                        Delete
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </>
-            )}
+                    ⋮
+                  </h4>
+                  {activeMenu === item.id && (
+                    <div
+                      ref={(el) => (menuRefs.current[index] = el)}
+                      className='absolute top-20 right-5 bg-white border border-black rounded shadow-lg'
+                    >
+                      <ul>
+                        <li
+                          className='p-2 hover:bg-gray-200 cursor-pointer'
+                          onClick={() => handleEdit(item)}
+                        >
+                          Edit
+                        </li>
+                        <li
+                          className='p-2 hover:bg-gray-200 cursor-pointer'
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          Delete
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
 
-            <h4 className='ml-4 font-bold'>{item.title}</h4>
-            <p className='ml-4'>{item.author}</p>
-            <p className='ml-4 mb-4'>Uploaded: {formatDate(item.uploadedAt)}</p>
-          </div>
-        ))}
-      </div>
+              <h4 className='ml-4 font-bold'>{item.title}</h4>
+              <p className='ml-4'>{item.author}</p>
+              <p className='ml-4 mb-4'>Uploaded: {formatDate(item.uploadedAt)}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {showAlert && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
