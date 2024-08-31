@@ -1,42 +1,28 @@
-import './App.css';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Home from './pages/Home';
-import Explore from './pages/Explore';
 import NoPage from './pages/NoPage';
 import Upload from './pages/Upload';
-import { useEffect, useState } from 'react';
+import Edit from './pages/Edit';
 import Login from './pages/Login';
 
-function App() {
-  const [data, setData] = useState([]);
+const queryClient = new QueryClient();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await fetch('http://localhost:8080/sheet');
-        const json = await result.json();
-        setData(json);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+const App = () => {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Home data={data} />} />
-          <Route path="/explore" element={<Explore data={data} />} />
-          <Route path="/upload" element={<Upload />} />
-          <Route path="*" element={<NoPage />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/edit/:id" element={<Edit />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*" element={<NoPage />} />
+          </Routes>
+        </BrowserRouter>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;

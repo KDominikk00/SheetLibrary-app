@@ -1,52 +1,82 @@
 import React, { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Header from '../components/Header';
 
+// Function to handle sheet upload
+const uploadSheet = async (data) => {
+  const response = await fetch('http://localhost:8080/sheet', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'userId': data.userId, // Add userId here
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error('Upload failed');
+  }
+  return response.json();
+};
+
 const Upload = () => {
+  const { isAuthenticated, loginWithRedirect, user } = useAuth0();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
   const [difficulty, setDifficulty] = useState('1');
   const [sheetthumb, setSheetThumb] = useState('');
   const [sheeturl, setSheetUrl] = useState('');
+  const [notification, setNotification] = useState(null);
 
-  const handleUpload = async (e) => {
+  // Redirect to login if not authenticated
+  if (!isAuthenticated) {
+    loginWithRedirect({
+      authorizationParams: {
+        redirect_uri: window.location.origin + '/',
+      },
+    });
+    return null; // Prevent rendering while redirecting
+  }
+
+  // useMutation hook for handling the upload
+  const { mutate: handleUpload, isLoading } = useMutation({
+    mutationFn: (data) => uploadSheet(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['sheets']); // Refresh data after upload
+      setNotification('Upload successful!');
+      setTimeout(() => {
+        setNotification(null);
+        navigate('/'); // Redirect to the home page
+      }, 1500); // Show notification for 3 seconds before redirecting
+    },
+    onError: (error) => {
+      console.error('Error uploading data:', error);
+      setNotification('An error occurred during the upload. Please try again.');
+    },
+  });
+
+  const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const data = {
+    if (!user) {
+      alert('You must be logged in to upload sheet music');
+      return;
+    }
+
+    handleUpload({
       title,
       author,
       description,
       difficulty,
       sheetthumb,
       sheeturl,
-    };
-
-    try {
-      const response = await fetch('http://localhost:8080/sheet', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const result = await response.json();
-      alert('Upload successful!');
-      // Handle success: Clear the form or redirect
-      setTitle('');
-      setAuthor('');
-      setDescription('');
-      setDifficulty('1');
-      setSheetThumb('');
-      setSheetUrl('');
-    } catch (error) {
-      console.error('Error uploading data:', error);
-      alert('An error occurred during the upload. Please try again.');
-    }
+      userId: user.sub, // Add userId here
+    });
   };
 
   return (
@@ -55,7 +85,7 @@ const Upload = () => {
       <div className='flex justify-center mt-40 ml-20'>
         <div className='bg-white p-8 rounded shadow-md w-full max-w-md'>
           <h1 className='text-3xl mb-6 text-center'>Upload a New Piece</h1>
-          <form onSubmit={handleUpload} className='space-y-6'>
+          <form onSubmit={handleFormSubmit} className='space-y-6'>
             <div>
               <label className='block text-xl mb-2'>Title:</label>
               <input 
@@ -116,12 +146,22 @@ const Upload = () => {
                 className='border p-2 w-full'
               />
             </div>
-            <button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition-all'>
-              Upload
+            <button
+              type='submit'
+              className='bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition-all'
+              disabled={isLoading}
+            >
+              {isLoading ? 'Uploading...' : 'Upload'}
             </button>
           </form>
         </div>
       </div>
+
+      {notification && (
+        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg mt-4 z-50">
+          {notification}
+        </div>
+      )}
     </>
   );
 };

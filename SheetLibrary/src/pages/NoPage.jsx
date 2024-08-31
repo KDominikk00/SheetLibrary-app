@@ -1,11 +1,9 @@
-import React from 'react'
+import React from 'react';
 
-const NoPage = () => {
-  return (
-    <>
-        <h1>Error 404: No page found</h1>
-    </>
-  )
-}
+const NoPage = () => (
+  <div className='text-center mt-20'>
+    <h1 className='text-4xl font-bold'>404 - Page Not Found</h1>
+  </div>
+);
 
-export default NoPage
+export default NoPage;

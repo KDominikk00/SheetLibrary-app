@@ -1,48 +1,19 @@
-import React from 'react'
+import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const Login = () => {
-    const { loginWithRedirect, isAuthenticated, user } = useAuth0();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-  
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      // Handle authentication using your own logic here
-      loginWithRedirect({
-        authorizationParams: {
-          // Additional parameters if needed
-          redirect_uri: window.location.origin,
-        },
-      });
-    };
-  
-    return (
-      <div>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    );
-  };
+  const { loginWithRedirect } = useAuth0();
 
-export default Login
+  return (
+    <div className='flex items-center justify-center h-screen'>
+      <button
+        onClick={() => loginWithRedirect()}
+        className='bg-blue-500 text-white px-6 py-3 rounded hover:bg-blue-600 transition-all'
+      >
+        Log in
+      </button>
+    </div>
+  );
+};
+
+export default Login;
