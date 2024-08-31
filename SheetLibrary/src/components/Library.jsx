@@ -16,7 +16,7 @@ const addPieceToLibrary = async (piece, userId) => {
   });
 
   if (response.ok) {
-    return response.json(); // Only return JSON if the response is OK
+    return response.json();
   } else {
     const errorData = await response.json();
     if (errorData.message === 'Piece already in library') {
@@ -62,7 +62,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
     mutationFn: (piece) => addPieceToLibrary(piece, user?.sub),
     onSuccess: () => {
       if (isExplorePage && typeof onAddToLibrary === 'function') {
-        onAddToLibrary('Piece added successfully!'); // Notify success
+        onAddToLibrary('Piece added successfully!');
       }
       queryClient.invalidateQueries(['userLibrary']);
     },
@@ -70,7 +70,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
       console.error('Error adding piece:', error);
       if (error.message === 'Piece already in library') {
         if (isExplorePage && typeof onAddToLibrary === 'function') {
-          onAddToLibrary('Piece already in library'); // Notify already in library
+          onAddToLibrary('Piece already in library');
         }
       } else {
         alert('Failed to add piece to library.');
@@ -96,7 +96,8 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
 
   const handleMenuClick = (id) => setActiveMenu(activeMenu === id ? null : id);
 
-  const handleEdit = (item) => {
+  const handleEdit = (item, event) => {
+    event.stopPropagation(); // Prevent the click event from propagating
     if (typeof onEditClick === 'function') {
       onEditClick(item);
     } else {
@@ -104,7 +105,8 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
     }
   };
 
-  const handleAddToLibrary = (item) => {
+  const handleAddToLibrary = (item, event) => {
+    event.stopPropagation(); // Prevent the click event from propagating
     if (!item.id) {
       alert('Invalid item. Unable to add to library.');
       return;
@@ -113,7 +115,8 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
     handleAddPieceMutation(item);
   };
 
-  const handleDelete = (pieceId) => {
+  const handleDelete = (pieceId, event) => {
+    event.stopPropagation(); // Prevent the click event from propagating
     setSelectedPieceId(pieceId);
     setShowAlert(true);
   };
@@ -139,6 +142,15 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handlePieceClick = (item) => {
+    navigate(`/sheet/${item.id}`); // Redirect to the detail page with the piece ID
+  };
+
+  const handleEllipsisClick = (event, item) => {
+    event.stopPropagation(); // Prevent the click event from propagating to the parent div
+    handleMenuClick(item.id);
+  };
+
   return (
     <section className='max-w-library ml-library'>
       {data.length === 0 ? (
@@ -154,39 +166,43 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
       ) : (
         <div className='flex flex-wrap'>
           {data.map((item, index) => (
-            <div key={item.id} className='relative border-solid border-black border bg-white cursor-pointer m-12 ml-0 rounded'>
+            <div
+              key={item.id}
+              className='relative border-solid border-black border bg-white cursor-pointer m-12 ml-0 rounded'
+              onClick={(e) => handlePieceClick(item)} // Handle piece click
+            >
               <img className='border-solid border-black border m-4 h-50 rounded' src={item.sheetthumb} alt={item.title} width={250} />
 
               {isExplorePage ? (
                 <button
                   className='absolute top-14 right-3 bg-blue-500 text-white pl-3 pr-3 pb-1 rounded text-2xl'
-                  onClick={() => handleAddToLibrary(item)}
+                  onClick={(e) => handleAddToLibrary(item, e)}
                 >
                   +
                 </button>
               ) : (
                 <>
                   <h4
-                    className='font-bold text-xl absolute right-3 top-13 cursor-pointer p-2 pt-0'
-                    onClick={() => handleMenuClick(item.id)}
+                    className='font-bold text-xl absolute right-3 top-17 cursor-pointer p-2 pt-0'
+                    onClick={(e) => handleEllipsisClick(e, item)}
                   >
                     ⋮
                   </h4>
                   {activeMenu === item.id && (
                     <div
                       ref={(el) => (menuRefs.current[index] = el)}
-                      className='absolute top-20 right-5 bg-white border border-black rounded shadow-lg'
+                      className='absolute bg-white border border-black ml-52 rounded shadow-lg'
                     >
                       <ul>
                         <li
                           className='p-2 hover:bg-gray-200 cursor-pointer'
-                          onClick={() => handleEdit(item)}
+                          onClick={(e) => handleEdit(item, e)}
                         >
                           Edit
                         </li>
                         <li
                           className='p-2 hover:bg-gray-200 cursor-pointer'
-                          onClick={() => handleDelete(item.id)}
+                          onClick={(e) => handleDelete(item.id, e)}
                         >
                           Delete
                         </li>
@@ -208,7 +224,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg text-center max-w-xs w-full">
             <p className="text-lg mb-4">Are you sure you want to delete this piece?</p>
-            <div className="flex justify-around">
+            <div className="flex justify-around z-50">
               <button
                 onClick={handleCancelDelete}
                 className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"

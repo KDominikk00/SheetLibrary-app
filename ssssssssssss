@@ -1,0 +1,65 @@
+[33mcommit d54848ec4aba55ead452fbe7d483326f2f5ca9e1[m[33m ([m[1;36mHEAD -> [m[1;32mWeb-app[m[33m)[m
+Author: Dominik Kowalski <dominikkowalski331@gmail.com>
+Date:   Sat Aug 31 14:45:55 2024 +0200
+
+    Create edit and delete logic
+
+[33mcommit 1bfe4d7bafd12e8836b237ac9a222fa538fa19f3[m
+Author: Dominik Kowalski <dominikkowalski331@gmail.com>
+Date:   Sat Aug 24 15:33:43 2024 +0200
+
+    Create login system
+
+[33mcommit d980696064cc1a89fa3e28c38076a0bb426d06d5[m
+Author: Dominik Kowalski <dominikkowalski331@gmail.com>
+Date:   Thu Aug 22 17:59:44 2024 +0200
+
+    Create Upload page
+
+[33mcommit dec9fdf44e228f2c78de2960110d17d8f1f0151e[m[33m ([m[1;31morigin/Web-app[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Tue Jul 23 20:55:01 2024 +0000
+
+    Optimise styles
+
+[33mcommit 1846842a5d72bfb401a90a8485dbf602074d4ad6[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Tue Jul 23 20:54:18 2024 +0000
+
+    Configure API connection
+
+[33mcommit 1baac723fab928c6572f13954668cd4197ceb937[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Sun Jul 21 20:07:43 2024 +0000
+
+    Add routes and temporary REST API connection
+
+[33mcommit 8e0f067ea1ba4d9342461ee6e6a4112ef1df15ce[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Sun Jul 21 20:06:44 2024 +0000
+
+    Fix src
+
+[33mcommit f9413aeaf90074173426c14e091edadb6f7e7ad0[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Sun Jul 21 20:06:32 2024 +0000
+
+    Add header animation
+
+[33mcommit 28b8a7fa751c6af5992b57858734db53a100e3c0[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Sun Jul 21 20:06:05 2024 +0000
+
+    Create pages templates
+
+[33mcommit 965d380eed562cc6ac76102de37e2b69e1198798[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Thu Jul 18 22:33:40 2024 +0000
+
+    Create header component
+
+[33mcommit 910cbab59d30feb727856f8e81fe4f81e905ecb1[m
+Author: KDominikk00 <dominikkowalski331@gmail.com>
+Date:   Thu Jul 18 21:33:55 2024 +0000
+
+    Initial react commit
