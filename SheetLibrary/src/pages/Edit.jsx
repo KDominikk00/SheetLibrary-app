@@ -72,7 +72,7 @@ const Edit = () => {
       setNotification('Piece updated successfully!');
       setTimeout(() => {
         navigate('/');
-      }, 1500); // Delay navigation by 1.5 seconds
+      }, 1500);
     },
     onError: (error) => {
       console.error('Error updating item:', error);
@@ -166,7 +166,7 @@ const Edit = () => {
       </div>
 
       {notification && (
-        <div className="fixed top-32 left-[calc(50%+3vw)] transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg mt-4 z-50">
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
           {notification}
         </div>
       )}

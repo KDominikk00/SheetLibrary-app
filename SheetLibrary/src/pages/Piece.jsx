@@ -32,7 +32,7 @@ const Piece = () => {
       <div className='flex flex-col lg:flex-row items-center lg:items-start p-4 lg:p-6 space-y-6 lg:space-y-0 lg:space-x-6'>
         <div className='flex-1 w-full'>
           <iframe
-            src={piece.sheeturl} // Assuming the PDF URL is stored in the piece object
+            src={piece.sheeturl}
             title="PDF Preview"
             className='w-full h-[calc(100vh-10rem)] lg:h-[calc(100vh-12rem)] border-0'
           />

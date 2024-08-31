@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Header from '../components/Header';
 
-// Function to handle sheet upload
 const uploadSheet = async (data) => {
   const response = await fetch('http://localhost:8080/sheet', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'userId': data.userId, // Add userId here
+      'userId': data.userId,
     },
     body: JSON.stringify(data),
   });
@@ -33,26 +32,24 @@ const Upload = () => {
   const [sheeturl, setSheetUrl] = useState('');
   const [notification, setNotification] = useState(null);
 
-  // Redirect to login if not authenticated
   if (!isAuthenticated) {
     loginWithRedirect({
       authorizationParams: {
         redirect_uri: window.location.origin + '/',
       },
     });
-    return null; // Prevent rendering while redirecting
+    return null;
   }
 
-  // useMutation hook for handling the upload
   const { mutate: handleUpload, isLoading } = useMutation({
     mutationFn: (data) => uploadSheet(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(['sheets']); // Refresh data after upload
+      queryClient.invalidateQueries(['sheets']);
       setNotification('Upload successful!');
       setTimeout(() => {
         setNotification(null);
-        navigate('/'); // Redirect to the home page
-      }, 1500); // Show notification for 3 seconds before redirecting
+        navigate('/'); 
+      }, 1500); 
     },
     onError: (error) => {
       console.error('Error uploading data:', error);
@@ -158,7 +155,7 @@ const Upload = () => {
       </div>
 
       {notification && (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded shadow-lg mt-4 z-50">
+        <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg z-50">
           {notification}
         </div>
       )}

@@ -49,7 +49,7 @@ const deletePieceFromLibrary = async (pieceId, userId) => {
   return response.json();
 };
 
-const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onAddToLibrary }) => {
+const Library = ({ data = [], onEditClick = () => {} }) => {
   const { user } = useAuth0();
   const [activeMenu, setActiveMenu] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
@@ -61,20 +61,11 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
   const { mutate: handleAddPieceMutation } = useMutation({
     mutationFn: (piece) => addPieceToLibrary(piece, user?.sub),
     onSuccess: () => {
-      if (isExplorePage && typeof onAddToLibrary === 'function') {
-        onAddToLibrary('Piece added successfully!');
-      }
       queryClient.invalidateQueries(['userLibrary']);
     },
     onError: (error) => {
       console.error('Error adding piece:', error);
-      if (error.message === 'Piece already in library') {
-        if (isExplorePage && typeof onAddToLibrary === 'function') {
-          onAddToLibrary('Piece already in library');
-        }
-      } else {
-        alert('Failed to add piece to library.');
-      }
+      alert('Failed to add piece to library.');
     },
   });
 
@@ -97,7 +88,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
   const handleMenuClick = (id) => setActiveMenu(activeMenu === id ? null : id);
 
   const handleEdit = (item, event) => {
-    event.stopPropagation(); // Prevent the click event from propagating
+    event.stopPropagation(); 
     if (typeof onEditClick === 'function') {
       onEditClick(item);
     } else {
@@ -106,7 +97,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
   };
 
   const handleAddToLibrary = (item, event) => {
-    event.stopPropagation(); // Prevent the click event from propagating
+    event.stopPropagation();
     if (!item.id) {
       alert('Invalid item. Unable to add to library.');
       return;
@@ -116,7 +107,7 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
   };
 
   const handleDelete = (pieceId, event) => {
-    event.stopPropagation(); // Prevent the click event from propagating
+    event.stopPropagation(); 
     setSelectedPieceId(pieceId);
     setShowAlert(true);
   };
@@ -143,11 +134,11 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
   }, []);
 
   const handlePieceClick = (item) => {
-    navigate(`/sheet/${item.id}`); // Redirect to the detail page with the piece ID
+    navigate(`/sheet/${item.id}`);
   };
 
   const handleEllipsisClick = (event, item) => {
-    event.stopPropagation(); // Prevent the click event from propagating to the parent div
+    event.stopPropagation();
     handleMenuClick(item.id);
   };
 
@@ -173,43 +164,32 @@ const Library = ({ data = [], onEditClick = () => {}, isExplorePage = false, onA
             >
               <img className='border-solid border-black border m-4 h-50 rounded' src={item.sheetthumb} alt={item.title} width={250} />
 
-              {isExplorePage ? (
-                <button
-                  className='absolute top-14 right-3 bg-blue-500 text-white pl-3 pr-3 pb-1 rounded text-2xl'
-                  onClick={(e) => handleAddToLibrary(item, e)}
+              <h4
+                className='font-bold text-xl absolute right-3 top-17 cursor-pointer p-2 pt-0'
+                onClick={(e) => handleEllipsisClick(e, item)}
+              >
+                ⋮
+              </h4>
+              {activeMenu === item.id && (
+                <div
+                  ref={(el) => (menuRefs.current[index] = el)}
+                  className='absolute bg-white border border-black ml-52 rounded shadow-lg'
                 >
-                  +
-                </button>
-              ) : (
-                <>
-                  <h4
-                    className='font-bold text-xl absolute right-3 top-17 cursor-pointer p-2 pt-0'
-                    onClick={(e) => handleEllipsisClick(e, item)}
-                  >
-                    ⋮
-                  </h4>
-                  {activeMenu === item.id && (
-                    <div
-                      ref={(el) => (menuRefs.current[index] = el)}
-                      className='absolute bg-white border border-black ml-52 rounded shadow-lg'
+                  <ul>
+                    <li
+                      className='p-2 hover:bg-gray-200 cursor-pointer'
+                      onClick={(e) => handleEdit(item, e)}
                     >
-                      <ul>
-                        <li
-                          className='p-2 hover:bg-gray-200 cursor-pointer'
-                          onClick={(e) => handleEdit(item, e)}
-                        >
-                          Edit
-                        </li>
-                        <li
-                          className='p-2 hover:bg-gray-200 cursor-pointer'
-                          onClick={(e) => handleDelete(item.id, e)}
-                        >
-                          Delete
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-                </>
+                      Edit
+                    </li>
+                    <li
+                      className='p-2 hover:bg-gray-200 cursor-pointer'
+                      onClick={(e) => handleDelete(item.id, e)}
+                    >
+                      Delete
+                    </li>
+                  </ul>
+                </div>
               )}
 
               <h4 className='ml-4 font-bold'>{item.title}</h4>
