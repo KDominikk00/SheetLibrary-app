@@ -17,6 +17,7 @@ To get started with the SheetLibrary App, follow these steps:
 ### Prerequisites
 
 - Node.js and npm installed on your machine. [Download Node.js](https://nodejs.org/).
+- Make sure you download and configure the custom REST API created for this app [SheetLibrary REST API](https://github.com/KDominikk00/SheetLibrary-REST-API)
 
 ### Installation
 
